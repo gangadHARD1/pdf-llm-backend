@@ -27,7 +27,7 @@ def client():
 def test_read_root(client):
     response = client.get("/")
     assert response.status_code==200
-    assert response.json()=={"message": "Hello, FastAPI!"}
+    assert response.json()=={"message": "Hello, Welcome to my pdf paresr!"}
 
 def test_file_upload(client):
     with open("test.pdf","rb") as f:

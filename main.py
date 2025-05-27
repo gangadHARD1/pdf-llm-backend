@@ -12,6 +12,7 @@ from jose import JWTError, jwt
 from datetime import timedelta
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException, status
+from mangum import Mangum
 
 openai.api_key =os.getenv("OPEN_API_KEY")
 database_url = os.getenv("DATABASE_URL")
@@ -42,6 +43,9 @@ async def lifespan(app: FastAPI):
     await database.disconnect()  
 
 app = FastAPI(lifespan=lifespan)
+
+#for 
+handler = Mangum(app)
 
 SECRET_KEY = "secret-key"  
 ALGORITHM = "HS256"
@@ -75,7 +79,7 @@ def generate_token():
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello, FastAPI!"}
+    return {"message": "Hello, Welcome to my pdf paresr!"}
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
