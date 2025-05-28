@@ -133,15 +133,17 @@ async def get_document(doc_id: int):
 
 #api_call
 def openai_call(text_content: str,prompt=None):
-    if prompt is None:
-        prompt = f"Summarize the following in 2 sentences:\n{text_content}"
+    try:
+        if prompt is None:
+            prompt = f"Summarize the following in 2 sentences:\n{text_content}"
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return response.choices[0].message["content"]
-
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message["content"]
+    except openai.NotFoundError:
+        return "this is mock summary as i dont have the paid version of openai api, please use your own key to get the real summary"
 
 @app.post("/summarize/{doc_id}")
 async def summarize_document(doc_id: int,user:dict = Depends(get_current_user)):
